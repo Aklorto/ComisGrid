@@ -10,3 +10,11 @@ function switchTab(name, btn) {
     document.getElementById('tab-' + name).classList.add('active');
     btn.classList.add('active');
 }
+function setReviewHiddenValues(select){
+    if(!select.value) return;
+
+    const parts = select.value.split('|');
+
+    document.getElementById('reviewOrderId').value = parts[0];
+    document.getElementById('reviewProductId').value = parts[1];
+}

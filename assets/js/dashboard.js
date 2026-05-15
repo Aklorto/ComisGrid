@@ -70,6 +70,16 @@ function openPaymentModal(productId, title, artist, price) {
     document.getElementById("walletBalance").textContent = currentUserBalance.toFixed(2);
     document.getElementById("afterBalance").textContent = afterBalance.toFixed(2);
     document.getElementById("payButtonAmount").textContent = Number(price).toFixed(2);
+    const payBtn = document.getElementById("walletPayBtn");
+const paymentError = document.getElementById("paymentError");
+
+if (afterBalance < 0) {
+    payBtn.disabled = true;
+    paymentError.textContent = "Insufficient balance. Please top up your ComisGrid Wallet first.";
+} else {
+    payBtn.disabled = false;
+    paymentError.textContent = "";
+}
 
     const modal = new bootstrap.Modal(document.getElementById("paymentModal"));
     modal.show();

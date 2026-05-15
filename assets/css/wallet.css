@@ -23,6 +23,52 @@ body{
     margin-bottom:30px;
 }
 
+.topbar-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.notif-bell{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    background:white;
+    color:#1685d8;
+    text-decoration:none;
+    box-shadow:0 8px 20px rgba(0,0,0,0.06);
+    font-size:18px;
+}
+
+.notif-bell .notif-badge{
+    position:absolute;
+    top:-6px;
+    right:-6px;
+    background:#ef4444;
+    color:white;
+    font-size:12px;
+    padding:2px 6px;
+    border-radius:12px;
+    min-width:18px;
+    height:18px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.notif-dropdown{position:absolute;top:54px;right:0;width:360px;max-height:420px;overflow:auto;background:white;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.12);padding:8px;z-index:9999}
+.notif-item{display:flex;gap:10px;padding:10px;border-radius:10px;text-decoration:none;color:inherit}
+.notif-item.unread{background:#f0f8ff}
+.notif-item-avatar{width:44px;height:44px;border-radius:8px;object-fit:cover}
+.notif-item-body{flex:1}
+.notif-item-msg{font-size:13px;color:#102a43}
+.notif-item-time{font-size:12px;color:#64748b;margin-top:6px}
+.notif-empty{padding:18px;color:#64748b;text-align:center}
+
 .wallet-topbar h1{
     font-size:36px;
     font-weight:800;
@@ -227,4 +273,68 @@ body{
     color: white;
     font-weight: 800;
     border-radius: 12px;
+}
+.dashboard-layout{
+    display:flex;
+    width:100%;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:245px;
+    height:100vh;
+    position:fixed;
+    left:0;
+    top:0;
+    background:linear-gradient(180deg,#ffffff,#eef8ff);
+    border-right:1px solid #dceeff;
+    padding:24px 18px;
+    z-index:10;
+}
+
+.brand{
+    text-align:center;
+    margin-bottom:28px;
+}
+
+.brand img{
+    width:95px;
+    height:auto;
+    object-fit:contain;
+}
+
+.brand h3{
+    font-size:22px;
+    font-weight:800;
+    color:#3174d8;
+    margin-top:8px;
+}
+
+.nav-menu{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.nav-menu a{
+    text-decoration:none;
+    color:#334155;
+    font-size:15px;
+    font-weight:600;
+    padding:13px 14px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active{
+    background:linear-gradient(135deg,#5eb8ff,#9d8cff);
+    color:white;
+}
+
+.page-main{
+    margin-left:245px;
+    width:calc(100% - 245px);
 }

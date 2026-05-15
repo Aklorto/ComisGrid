@@ -15,8 +15,22 @@ if (!$conn) {
 }
 
 $loginInput = trim($_POST['login_input'] ?? '');
+$username = trim($_POST['username'] ?? $loginInput);
 $password = $_POST['password'] ?? '';
 
+/* ADMIN LOGIN */
+if (
+    strtolower($username) === 'admingrid'
+    && $password === '12345'
+) {
+    $_SESSION['admin_logged_in'] = true;
+    $_SESSION['admin_username'] = 'admingrid';
+
+    header('Location: admin_dashboard.php');
+    exit;
+}
+
+/* NORMAL USER LOGIN */
 if ($loginInput === '' || $password === '') {
     echo '<p>Email/username and password are required.</p>';
     echo '<p><a href="../index.php">Back</a></p>';

@@ -76,10 +76,8 @@ if (!$artworksResult) {
         <nav class="nav-menu">
             <a href="dashboard.php" class="active"><i class="bi bi-compass"></i> Explore</a>
             <a href="profile.php"><i class="bi bi-person-circle"></i> My Profile</a>
-            <a href="upload.php"><i class="bi bi-plus-square"></i> Upload Artwork</a>
             <a href="wallet.php"><i class="bi bi-wallet2"></i> Wallet</a>
             <a href="messages.php"><i class="bi bi-chat-dots"></i> Messages</a>
-            <a href="orders.php"><i class="bi bi-bag-check"></i> Orders</a>
             <a href="logout.php"><i class="bi bi-box-arrow-left"></i> Logout</a>
         </nav>
     </aside>
@@ -390,9 +388,11 @@ onclick="alert('GCash/Maya/PayPal is currently in UI simulation mode. Please use
                             </p>
                         </div>
 
-                        <button type="submit" class="wallet-pay-btn">
-                            Pay ₱<span id="payButtonAmount"></span> with CG Wallet
-                        </button>
+<button type="submit" class="wallet-pay-btn" id="walletPayBtn">
+    Pay ₱<span id="payButtonAmount"></span> with CG Wallet
+</button>
+
+<div class="payment-error" id="paymentError"></div>
                     </div>
 
                 </div>
@@ -401,5 +401,7 @@ onclick="alert('GCash/Maya/PayPal is currently in UI simulation mode. Please use
         </div>
     </div>
 </div>
+
+<script src="../assets/js/social_actions.js"></script>
 </body>
 </html>

@@ -651,3 +651,15 @@ body {
         opacity:1;
     }
 }
+.payment-error{
+    margin-top:12px;
+    color:#ff6b6b;
+    font-size:13px;
+    font-weight:700;
+    text-align:center;
+}
+
+.wallet-pay-btn:disabled{
+    opacity:0.45;
+    cursor:not-allowed;
+}

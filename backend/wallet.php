@@ -38,6 +38,12 @@ $transactions_stmt->bind_param("i", $user_id);
 $transactions_stmt->execute();
 
 $transactions = $transactions_stmt->get_result();
+
+// get unread notifications count for current user
+$notif_stmt = $conn->prepare("SELECT COUNT(*) AS unread FROM notifications WHERE user_id = ? AND is_read = 0");
+$notif_stmt->bind_param("i", $user_id);
+$notif_stmt->execute();
+$notif_count = $notif_stmt->get_result()->fetch_assoc()['unread'] ?? 0;
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +59,24 @@ $transactions = $transactions_stmt->get_result();
     <link rel="stylesheet" href="../assets/css/wallet.css">
 </head>
 <body>
+<div class="dashboard-layout">
 
+<aside class="sidebar">
+    <div class="brand">
+        <img src="../assets/images/comisgridlogo1.png" alt="ComisGrid Logo">
+        <h3>ComisGrid</h3>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="dashboard.php"><i class="bi bi-compass"></i> Explore</a>
+        <a href="profile.php"><i class="bi bi-person-circle"></i> My Profile</a>
+        <a href="wallet.php"><i class="bi bi-wallet2"></i> Wallet</a>
+        <a href="messages.php"><i class="bi bi-chat-dots"></i> Messages</a>
+        <a href="logout.php"><i class="bi bi-box-arrow-left"></i> Logout</a>
+    </nav>
+</aside>
+
+<main class="page-main">
 <div class="wallet-wrapper">
 
     <div class="wallet-topbar">
@@ -62,9 +85,17 @@ $transactions = $transactions_stmt->get_result();
             <p>Manage your earnings and transactions.</p>
         </div>
 
-        <a href="dashboard.php" class="back-btn">
-            Back to Dashboard
-        </a>
+        <div class="topbar-actions">
+            <a href="dashboard.php" class="back-btn">Back to Dashboard</a>
+
+            <button id="notifToggle" class="notif-bell" type="button" aria-expanded="false">
+                <i class="bi bi-bell"></i>
+                <?php if (!empty($notif_count) && $notif_count > 0): ?>
+                    <span class="notif-badge"><?php echo $notif_count; ?></span>
+                <?php endif; ?>
+            </button>
+            <div id="notifDropdown" class="notif-dropdown" hidden></div>
+        </div>
     </div>
 
     <div class="wallet-grid">
@@ -169,6 +200,7 @@ $transactions = $transactions_stmt->get_result();
 </div>
 
 <script src="../assets/js/wallet.js"></script>
+<script src="../assets/js/notifications.js"></script>
 
 <!-- TOP UP MODAL -->
 <div class="modal fade" id="topupModal" tabindex="-1">
@@ -237,7 +269,8 @@ $transactions = $transactions_stmt->get_result();
         </div>
     </div>
 </div>
-
+</div>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
