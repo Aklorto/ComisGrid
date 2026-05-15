@@ -1,0 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #1f2340;
+    background:
+        radial-gradient(circle at top left, rgba(120, 170, 255, 0.55), transparent 35%),
+        linear-gradient(135deg, #f9fbff 0%, #f3f2ff 45%, #f7ecff 100%);
+}
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+}
+
+.auth-card {
+    width: min(1100px, 100%);
+    min-height: 650px;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 24px 70px rgba(95, 82, 190, 0.18);
+    backdrop-filter: blur(18px);
+}
+
+.image-panel {
+    position: relative;
+    padding: 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background:
+        linear-gradient(145deg, rgba(136, 183, 255, 0.92), rgba(214, 112, 240, 0.72)),
+        linear-gradient(135deg, #a7c7ff, #e6a2ff);
+    color: white;
+}
+
+.image-panel::after {
+    content: "";
+    position: absolute;
+    inset: 22px;
+    border-radius: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    pointer-events: none;
+}
+
+.brand-box {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.logo-mark {
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    font-weight: 800;
+    letter-spacing: -1px;
+    box-shadow: 0 12px 30px rgba(75, 64, 150, 0.2);
+}
+
+.brand-box h1 {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.brand-box p {
+    margin-top: 8px;
+    max-width: 390px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+.image-placeholder {
+    position: relative;
+    z-index: 1;
+    min-height: 350px;
+    border-radius: 28px;
+    border: 2px dashed rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.16);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 28px;
+}
+
+.image-placeholder i {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    opacity: 0.9;
+}
+
+.image-placeholder p {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.form-panel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfaff 100%);
+}
+
+.form-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 410px;
+    min-height: 540px;
+    overflow: hidden;
+}
+
+.form-box {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateX(48px);
+    pointer-events: none;
+    transition: 0.45s ease;
+}
+
+.form-box.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.form-box.slide-left {
+    transform: translateX(-48px);
+}
+
+.mini-label {
+    display: inline-flex;
+    margin-bottom: 12px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    background: #f2efff;
+    color: #6c55d9;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: #25234a;
+}
+
+.subtitle {
+    margin-bottom: 26px;
+    color: #74748a;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: #393958;
+}
+
+.input-group {
+    height: 50px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 15px;
+    border-radius: 16px;
+    background: #f7f8ff;
+    border: 1px solid #ebeafd;
+    transition: 0.25s ease;
+}
+
+.input-group:focus-within {
+    border-color: #9d8cff;
+    box-shadow: 0 0 0 4px rgba(157, 140, 255, 0.16);
+    background: white;
+}
+
+.input-group i {
+    color: #7867d9;
+}
+
+.input-group input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font: inherit;
+    color: #25234a;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 2px 0 22px;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: #66667e;
+    font-weight: 500;
+}
+
+.primary-btn {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #7aa7ff, #a26dff 55%, #d26df1);
+    box-shadow: 0 14px 28px rgba(117, 94, 220, 0.26);
+    transition: 0.25s ease;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 35px rgba(117, 94, 220, 0.34);
+}
+
+.link-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    color: #765de4;
+    font-weight: 600;
+}
+
+.link-btn:hover {
+    text-decoration: underline;
+}
+
+.link-btn.strong {
+    font-weight: 800;
+}
+
+.switch-text {
+    margin-top: 22px;
+    text-align: center;
+    color: #68677d;
+    font-size: 0.93rem;
+}
+
+@media (max-width: 880px) {
+    .auth-card {
+        grid-template-columns: 1fr;
+    }
+
+    .image-panel {
+        min-height: 320px;
+    }
+
+    .image-placeholder {
+        min-height: 170px;
+        margin-top: 32px;
+    }
+
+    .form-panel {
+        padding: 36px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-page {
+        padding: 14px;
+    }
+
+    .auth-card {
+        border-radius: 24px;
+    }
+
+    .image-panel {
+        padding: 28px;
+    }
+
+    .brand-box h1 {
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .form-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
