@@ -1,3 +1,55 @@
+<?php
+session_start();
+
+require_once __DIR__ . '/../config/db.php';
+
+$conn = db_connect();
+
+if (!$conn) {
+    die("Database connection failed.");
+}
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../index.php');
+    exit;
+}
+
+$currentUserId = $_SESSION['user_id'];
+
+$userBalanceQuery = $conn->prepare("SELECT balance FROM users WHERE user_id = ?");
+$userBalanceQuery->bind_param("i", $currentUserId);
+$userBalanceQuery->execute();
+$currentUser = $userBalanceQuery->get_result()->fetch_assoc();
+$currentBalance = $currentUser['balance'] ?? 0;
+$purchaseSuccess = isset($_GET['purchase']) && $_GET['purchase'] === 'success';
+$purchaseAmount = $_GET['amount'] ?? 0;
+
+
+$artworksQuery = "
+SELECT 
+    products.product_id,
+    products.seller_id,
+    products.title,
+    products.category,
+    products.description,
+    products.price,
+    products.cover_image,
+    products.status,
+    products.created_at,
+    users.username
+FROM products
+JOIN users ON products.seller_id = users.user_id
+WHERE products.status = 'Available'
+ORDER BY products.created_at DESC
+";
+
+$artworksResult = mysqli_query($conn, $artworksQuery);
+
+if (!$artworksResult) {
+    die('Dashboard query failed: ' . mysqli_error($conn));
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,18 +69,18 @@
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="brand">
-            <img src="assets/images/comisgridlogo1.png" alt="ComisGrid Logo">
+            <img src="../assets/images/comisgridlogo1.png" alt="ComisGrid Logo">
             <h3>ComisGrid</h3>
         </div>
 
         <nav class="nav-menu">
             <a href="dashboard.php" class="active"><i class="bi bi-compass"></i> Explore</a>
-            <a href="#"><i class="bi bi-person-circle"></i> My Profile</a>
-            <a href="#"><i class="bi bi-plus-square"></i> Upload Artwork</a>
-            <a href="#"><i class="bi bi-wallet2"></i> Wallet</a>
-            <a href="#"><i class="bi bi-chat-dots"></i> Messages</a>
-            <a href="#"><i class="bi bi-bag-check"></i> Orders</a>
-            <a href="index.php"><i class="bi bi-box-arrow-left"></i> Logout</a>
+            <a href="profile.php"><i class="bi bi-person-circle"></i> My Profile</a>
+            <a href="upload.php"><i class="bi bi-plus-square"></i> Upload Artwork</a>
+            <a href="wallet.php"><i class="bi bi-wallet2"></i> Wallet</a>
+            <a href="messages.php"><i class="bi bi-chat-dots"></i> Messages</a>
+            <a href="orders.php"><i class="bi bi-bag-check"></i> Orders</a>
+            <a href="logout.php"><i class="bi bi-box-arrow-left"></i> Logout</a>
         </nav>
     </aside>
 
@@ -59,102 +111,59 @@
 
         <!-- ARTWORK GRID -->
         <section class="art-grid" id="artGrid">
+<?php while ($art = mysqli_fetch_assoc($artworksResult)): ?>
+    <div class="art-card" data-category="<?php echo htmlspecialchars($art['category']); ?>" data-title="<?php echo htmlspecialchars($art['title']); ?>">
+        <img 
+    src="<?php echo htmlspecialchars($art['cover_image']); ?>" 
+    alt="Artwork"
+    onclick="openProductPreview(
+        '<?php echo htmlspecialchars(addslashes($art['title'])); ?>',
+        '<?php echo htmlspecialchars(addslashes($art['username'])); ?>',
+        '<?php echo htmlspecialchars($art['cover_image']); ?>',
+        '<?php echo htmlspecialchars(addslashes($art['description'] ?? 'No description provided.')); ?>',
+        <?php echo $art['price']; ?>
+    )"
+>
 
-            <div class="art-card" data-category="anime" data-title="Anime Character Commission">
-                <img src="../assets/images/1.jpeg" alt="Artwork">
-                <div class="art-info">
-                    <div>
-                        <h4>Anime Character Commission</h4>
-                        <p>by Mika Arts</p>
-                    </div>
-                    <span class="price">25 pts</span>
-                </div>
-                <div class="card-actions">
-                    <button><i class="bi bi-heart"></i></button>
-                    <button><i class="bi bi-bookmark"></i></button>
-                    <button class="buy-btn" onclick="openBuyModal('Anime Character Commission', 25, 'Mika Arts')">Buy</button>
-                </div>
+        <div class="art-info">
+            <div>
+                <h4><?php echo htmlspecialchars($art['title']); ?></h4>
+                <p>by <a href="profile.php?user_id=<?php echo $art['seller_id']; ?>">
+        <?php echo htmlspecialchars($art['username']); ?>
+    </a>
+</p>
             </div>
 
-            <div class="art-card tall" data-category="digital" data-title="Fantasy Digital Painting">
-                <img src="../assets/images/2.jpeg" alt="Artwork">
-                <div class="art-info">
-                    <div>
-                        <h4>Fantasy Digital Painting</h4>
-                        <p>by Carlo Designs</p>
-                    </div>
-                    <span class="price">40 pts</span>
-                </div>
-                <div class="card-actions">
-                    <button><i class="bi bi-heart"></i></button>
-                    <button><i class="bi bi-bookmark"></i></button>
-                    <button class="buy-btn" onclick="openBuyModal('Fantasy Digital Painting', 40, 'Carlo Designs')">Buy</button>
-                </div>
-            </div>
+            <span class="price">₱<?php echo number_format($art['price'], 2); ?></span>
+        </div>
 
-            <div class="art-card" data-category="portrait" data-title="Realistic Portrait">
-                <img src="../assets/images/3.jpeg" alt="Artwork">
-                <div class="art-info">
-                    <div>
-                        <h4>Realistic Portrait</h4>
-                        <p>by Jana Studio</p>
-                    </div>
-                    <span class="price">35 pts</span>
-                </div>
-                <div class="card-actions">
-                    <button><i class="bi bi-heart"></i></button>
-                    <button><i class="bi bi-bookmark"></i></button>
-                    <button class="buy-btn" onclick="openBuyModal('Realistic Portrait', 35, 'Jana Studio')">Buy</button>
-                </div>
-            </div>
+        <div class="card-actions">
+            <button type="button"><i class="bi bi-heart"></i></button>
+            <button type="button"><i class="bi bi-bookmark"></i></button>
 
-            <div class="art-card wide" data-category="logo" data-title="Logo Design Package">
-                <img src="../assets/images/4.jpeg" alt="Artwork">
-                <div class="art-info">
-                    <div>
-                        <h4>Logo Design Package</h4>
-                        <p>by GridWorks</p>
-                    </div>
-                    <span class="price">30 pts</span>
-                </div>
-                <div class="card-actions">
-                    <button><i class="bi bi-heart"></i></button>
-                    <button><i class="bi bi-bookmark"></i></button>
-                    <button class="buy-btn" onclick="openBuyModal('Logo Design Package', 30, 'GridWorks')">Buy</button>
-                </div>
-            </div>
+           <?php if ($_SESSION['user_id'] == $art['seller_id']): ?>
+    <button class="buy-btn" disabled>Own Product</button>
+<?php else: ?>
+    <button 
+        type="button" 
+        class="buy-btn"
+        onclick="openPaymentModal(
+            <?php echo $art['product_id']; ?>,
+            '<?php echo htmlspecialchars(addslashes($art['title'])); ?>',
+            '<?php echo htmlspecialchars(addslashes($art['username'])); ?>',
+            <?php echo $art['price']; ?>
+        )"
+    >
+        Buy
+    </button>
+<?php endif; ?>
+        </div>
 
-            <div class="art-card tall" data-category="anime" data-title="Chibi Avatar">
-                <img src="../assets/images/5.jpeg" alt="Artwork">
-                <div class="art-info">
-                    <div>
-                        <h4>Chibi Avatar</h4>
-                        <p>by Kira Draws</p>
-                    </div>
-                    <span class="price">15 pts</span>
-                </div>
-                <div class="card-actions">
-                    <button><i class="bi bi-heart"></i></button>
-                    <button><i class="bi bi-bookmark"></i></button>
-                    <button class="buy-btn" onclick="openBuyModal('Chibi Avatar', 15, 'Kira Draws')">Buy</button>
-                </div>
-            </div>
+        
+    </div>
+<?php endwhile; ?>
 
-            <div class="art-card" data-category="digital" data-title="Abstract Artwork">
-                <img src="../assets/images/6.jpeg" alt="Artwork">
-                <div class="art-info">
-                    <div>
-                        <h4>Abstract Artwork</h4>
-                        <p>by PixelDream</p>
-                    </div>
-                    <span class="price">20 pts</span>
-                </div>
-                <div class="card-actions">
-                    <button><i class="bi bi-heart"></i></button>
-                    <button><i class="bi bi-bookmark"></i></button>
-                    <button class="buy-btn" onclick="openBuyModal('Abstract Artwork', 20, 'PixelDream')">Buy</button>
-                </div>
-            </div>
+            
 
         </section>
 
@@ -184,15 +193,15 @@
                 <div class="breakdown">
                     <div>
                         <span>Buyer pays</span>
-                        <strong><span id="modalPrice"></span> pts</strong>
+                            <strong>₱<span id="modalPrice"></span></strong>
                     </div>
                     <div>
                         <span>Platform fee 5%</span>
-                        <strong><span id="modalFee"></span> pts</strong>
+                        <strong>₱<span id="modalFee"></span></strong>
                     </div>
                     <div>
                         <span>Artist receives</span>
-                        <strong><span id="modalArtistEarn"></span> pts</strong>
+                        <strong>₱<span id="modalArtistEarn"></span></strong>
                     </div>
                 </div>
             </div>
@@ -215,38 +224,182 @@
             </div>
 
             <div class="modal-body">
-                <form>
-                    <label>Artwork Title</label>
-                    <input type="text" class="form-control mb-3" placeholder="Enter artwork title">
+                <form action="upload_artwork.php" method="POST" enctype="multipart/form-data">
+    <label>Artwork Title</label>
+    <input type="text" name="title" class="form-control mb-3" placeholder="Enter artwork title">
 
-                    <label>Category</label>
-                    <select class="form-control mb-3">
-                        <option>Digital Art</option>
-                        <option>Anime</option>
-                        <option>Portrait</option>
-                        <option>Logo</option>
-                    </select>
+    <label>Category</label>
+    <select name="category" class="form-control mb-3">
+        <option value="Digital Art">Digital Art</option>
+        <option value="Anime">Anime</option>
+        <option value="Portrait">Portrait</option>
+        <option value="Logo">Logo</option>
+    </select>
 
-                    <label>Price in Points</label>
-                    <input type="number" class="form-control mb-3" placeholder="Example: 25">
+    <label>Price in Pesos</label>
+    <input type="number" name="price" step="0.01" class="form-control mb-3" placeholder="Example: 500">
 
-                    <label>Artwork Image</label>
-                    <input type="file" class="form-control mb-3">
+    <label>Artwork Image</label>
+    <input type="file" name="artwork_image" class="form-control mb-3" accept="image/*">
 
-                    <label>Description</label>
-                    <textarea class="form-control" rows="3" placeholder="Describe your artwork or commission offer"></textarea>
-                </form>
+    <label>Description</label>
+    <textarea name="description" class="form-control" rows="3" placeholder="Describe your artwork or commission offer"></textarea>
+
+    <button type="submit" class="btn confirm-btn mt-3">Post Artwork</button>
+</form>
             </div>
 
-            <div class="modal-footer">
-                <button class="btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn confirm-btn">Post Artwork</button>
+        </div>
+    </div>
+</div>
+<?php if ($purchaseSuccess): ?>
+
+<div class="success-overlay" id="successOverlay">
+    <div class="success-box">
+
+        <div class="success-check">
+            <i class="bi bi-check-lg"></i>
+        </div>
+
+        <h2>Payment Successful</h2>
+
+        <p>
+            Your payment of 
+            <strong>₱<?php echo number_format((float)$purchaseAmount, 2); ?></strong>
+            was successfully processed.
+        </p>
+
+        <button onclick="closeSuccessModal()" class="success-btn">
+            Continue
+        </button>
+
+    </div>
+</div>
+
+<?php endif; ?>
+<script>
+    const currentUserBalance = <?php echo json_encode((float)$currentBalance); ?>;
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+
+<!-- PRODUCT PREVIEW MODAL -->
+<div class="modal fade" id="productPreviewModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content preview-modal">
+            <div class="preview-layout">
+                <div class="preview-image-wrap">
+                    <img id="previewImage" src="" alt="Artwork Preview">
+                </div>
+
+                <div class="preview-info">
+                    <button type="button" class="btn-close preview-close" data-bs-dismiss="modal"></button>
+
+                    <h2 id="previewTitle"></h2>
+                    <p class="preview-artist">by <span id="previewArtist"></span></p>
+
+                    <div class="preview-price">₱<span id="previewPrice"></span></div>
+
+                    <hr>
+
+                    <h6>Description</h6>
+                    <p id="previewDescription"></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/js/dashboard.js"></script>
+<!-- PAYMENT MODAL -->
+<div class="modal fade" id="paymentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content payment-modal">
+
+            <form action="buy_product.php" method="POST">
+                <input type="hidden" name="product_id" id="paymentProductId">
+
+                <div class="payment-root">
+
+                    <div class="payment-left">
+                        <div class="pay-title">Pay with</div>
+
+                       <div class="pay-section">Card</div>
+
+<div class="pay-method disabled"
+onclick="alert('Debit/Credit Card is currently in UI simulation mode. Please use ComisGrid Wallet.')">
+    <span>Debit / Credit card</span>
+    <small>Coming soon</small>
+</div>
+
+<div class="pay-section">Online Banking</div>
+
+<div class="pay-method disabled"
+onclick="alert('Online Banking is currently in UI simulation mode. Please use ComisGrid Wallet.')">
+    <span>Online banking</span>
+    <small>Coming soon</small>
+</div>
+
+<div class="pay-section">E-Wallet</div>
+
+<div class="pay-method disabled"
+onclick="alert('GCash/Maya/PayPal is currently in UI simulation mode. Please use ComisGrid Wallet.')">
+    <span>GCash / Maya / PayPal</span>
+    <small>Coming soon</small>
+</div>
+
+
+
+                        <div class="pay-section">ComisGrid</div>
+                        <div class="pay-method active">
+                            <span>ComisGrid Wallet</span>
+                            <small>Available</small>
+                        </div>
+
+                        <div class="payment-summary">
+                            <div><span>Artwork Price</span><strong>₱<span id="paySubtotal"></span></strong></div>
+                            <div><span>Platform Fee 5%</span><strong>₱<span id="payFee"></span></strong></div>
+                            <div><span>Artist Receives</span><strong>₱<span id="payArtistEarn"></span></strong></div>
+                            <div class="total"><span>Total</span><strong>₱<span id="payTotal"></span></strong></div>
+                        </div>
+                    </div>
+
+                    <div class="payment-right">
+                        <button type="button" class="btn-close payment-close" data-bs-dismiss="modal"></button>
+
+                        <h4>ComisGrid Wallet</h4>
+                        <p class="payment-subtitle">Your linked wallet</p>
+
+                        <div class="wallet-card">
+                            <div class="wallet-top">
+                                <div class="wallet-logo">CG</div>
+                                <div>
+                                    <strong>ComisGrid Wallet</strong>
+                                    <p>Instant internal payment</p>
+                                </div>
+                            </div>
+
+                            <div class="wallet-balance">
+                                <span>Available balance</span>
+                                <strong>₱<span id="walletBalance">0.00</span></strong>
+                            </div>
+
+                            <p class="after-payment">
+                                After payment, your balance will be 
+                                <strong>₱<span id="afterBalance">0.00</span></strong>.
+                            </p>
+                        </div>
+
+                        <button type="submit" class="wallet-pay-btn">
+                            Pay ₱<span id="payButtonAmount"></span> with CG Wallet
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>

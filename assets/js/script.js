@@ -12,6 +12,21 @@ function showForgot() {
     formSlider.style.transform = "translateX(-66.6666%)";
 }
 
+function nextRegisterStep() {
+    document.getElementById("registerStep1").classList.remove("active");
+    document.getElementById("registerStep1").style.display = "none";
+
+    document.getElementById("registerStep2").classList.add("active");
+    document.getElementById("registerStep2").style.display = "block";
+}
+
+function prevRegisterStep() {
+    document.getElementById("registerStep2").classList.remove("active");
+    document.getElementById("registerStep2").style.display = "none";
+
+    document.getElementById("registerStep1").classList.add("active");
+    document.getElementById("registerStep1").style.display = "block";
+}
 function togglePassword(inputId) {
     const input = document.getElementById(inputId);
     const button = input.nextElementSibling;

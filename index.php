@@ -70,16 +70,16 @@
                     <h1>Welcome Back!</h1>
                     <p class="subtitle">Login to explore artworks, commissions, and chats.</p>
 
-                    <form id="loginForm" action="#" method="POST">
+                    <form id="loginForm" action="backend/login.php" method="POST">
                         <div class="mb-3">
                             <label>Email or Username</label>
-                            <input type="text" class="form-control" placeholder="Enter your email or username">
+                            <input type="text" class="form-control" name="login_input" placeholder="Enter your email or username">
                         </div>
 
                         <div class="mb-2">
                             <label>Password</label>
                             <div class="password-box">
-                                <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password">
+                                <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Enter your password">
                                 <button type="button" onclick="togglePassword('loginPassword')">Show</button>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                             <button type="button" onclick="showForgot()">Forgot password?</button>
                         </div>
 
-                       <a href="backend/dashboard.php" class="main-btn text-decoration-none d-flex align-items-center justify-content-center">LOGIN</a>
+                       <button type="submit" class="main-btn">LOGIN</button>
                     </form>
 
                     <p class="switch-text">
@@ -102,45 +102,76 @@
                     <h1>Create Account</h1>
                     <p class="subtitle">Join ComisGrid and start buying or selling art.</p>
 
-                    <form id="registerForm" action="backend/register.php" method="POST">
-                        <div class="mb-3">
-                            <label>Full Name</label>
-                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter your full name">
-                        </div>
+                    <form id="registerForm" action="backend/register.php" method="POST" enctype="multipart/form-data">
 
-                        <div class="mb-3">
-                            <label>Username</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username">
-                        </div>
+    <div class="register-step active" id="registerStep1">
+        <div class="mb-3">
+            <label>Full Name</label>
+            <input type="text" class="form-control" name="fullname" placeholder="Enter your full name">
+        </div>
 
-                        <div class="mb-3">
-                            <label>Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
-                        </div>
+        <div class="mb-3">
+            <label>Username</label>
+            <input type="text" class="form-control" name="username" placeholder="Choose a username">
+        </div>
 
-                        <div class="mb-3">
-                            <label>Contact Number</label>
-                            <input type="tel" class="form-control" id="contact" name="contact" placeholder="e.g. +1 555-555-5555">
-                        </div>
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="email" class="form-control" name="email" placeholder="Enter your email">
+        </div>
 
-                        <div class="mb-3">
-                            <label>Password</label>
-                            <div class="password-box">
-                                <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Create password">
-                                <button type="button" onclick="togglePassword('registerPassword')">Show</button>
-                            </div>
-                        </div>
+        <div class="mb-3">
+    <label>GCash Number for Wallet/Withdrawal</label>
+    <input type="text" class="form-control" name="gcash_number" maxlength="11" placeholder="09XXXXXXXXX">
+</div>
 
-                        <div class="mb-3">
-                            <label>Confirm Password</label>
-                            <div class="password-box">
-                                <input type="password" class="form-control" id="registerConfirmPassword" name="confirm_password" placeholder="Confirm password">
-                                <button type="button" onclick="togglePassword('registerConfirmPassword')">Show</button>
-                            </div>
-                        </div>
+        <button type="button" class="main-btn" onclick="nextRegisterStep()">NEXT</button>
+    </div>
 
-                        <button type="submit" class="main-btn">REGISTER</button>
-                    </form>
+    <div class="register-step" id="registerStep2" style="display: none;">
+        <div class="mb-3">
+            <label>Profile Picture</label>
+            <input type="file" class="form-control" name="profile_image" accept="image/*">
+        </div>
+
+        <div class="mb-3">
+            <label>Facebook Link Optional</label>
+            <input type="url" class="form-control" name="facebook_link" placeholder="Facebook profile link">
+        </div>
+
+        <div class="mb-3">
+            <label>Instagram Link Optional</label>
+            <input type="url" class="form-control" name="instagram_link" placeholder="Instagram profile link">
+        </div>
+
+        <div class="mb-3">
+            <label>X/Twitter Link Optional</label>
+            <input type="url" class="form-control" name="x_link" placeholder="X/Twitter profile link">
+        </div>
+
+        <div class="mb-3">
+            <label>Password</label>
+            <div class="password-box">
+                <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Create password">
+                <button type="button" onclick="togglePassword('registerPassword')">Show</button>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Confirm Password</label>
+            <div class="password-box">
+                <input type="password" class="form-control" id="registerConfirmPassword" name="confirm_password" placeholder="Confirm password">
+                <button type="button" onclick="togglePassword('registerConfirmPassword')">Show</button>
+            </div>
+        </div>
+
+        <div class="register-actions">
+            <button type="button" class="secondary-btn" onclick="prevRegisterStep()">BACK</button>
+            <button type="submit" class="main-btn">REGISTER</button>
+        </div>
+    </div>
+
+</form>
 
                     <p class="switch-text">
                         Already have an account?

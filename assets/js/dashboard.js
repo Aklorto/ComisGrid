@@ -32,8 +32,8 @@ function filterArt(category) {
 }
 
 function openBuyModal(title, price, artist) {
-    const platformFee = price * 0.05;
-    const artistEarn = price - platformFee;
+const platformFee = price * 0.05;
+const artistEarn = price - platformFee;
 
     document.getElementById("modalArtwork").textContent = title;
     document.getElementById("modalArtist").textContent = artist;
@@ -43,4 +43,40 @@ function openBuyModal(title, price, artist) {
 
     const buyModal = new bootstrap.Modal(document.getElementById("buyModal"));
     buyModal.show();
+}
+function openProductPreview(title, artist, image, description, price) {
+    document.getElementById("previewTitle").textContent = title;
+    document.getElementById("previewArtist").textContent = artist;
+    document.getElementById("previewImage").src = image;
+    document.getElementById("previewDescription").textContent = description;
+    document.getElementById("previewPrice").textContent = Number(price).toFixed(2);
+
+    const modal = new bootstrap.Modal(document.getElementById("productPreviewModal"));
+    modal.show();
+}
+
+function openPaymentModal(productId, title, artist, price) {
+    const platformFee = Number(price) * 0.05;
+    const artistEarn = Number(price) - platformFee;
+    const afterBalance = currentUserBalance - Number(price);
+
+    document.getElementById("paymentProductId").value = productId;
+
+    document.getElementById("paySubtotal").textContent = Number(price).toFixed(2);
+    document.getElementById("payFee").textContent = platformFee.toFixed(2);
+    document.getElementById("payArtistEarn").textContent = artistEarn.toFixed(2);
+    document.getElementById("payTotal").textContent = Number(price).toFixed(2);
+
+    document.getElementById("walletBalance").textContent = currentUserBalance.toFixed(2);
+    document.getElementById("afterBalance").textContent = afterBalance.toFixed(2);
+    document.getElementById("payButtonAmount").textContent = Number(price).toFixed(2);
+
+    const modal = new bootstrap.Modal(document.getElementById("paymentModal"));
+    modal.show();
+}
+function closeSuccessModal(){
+    document.getElementById("successOverlay").remove();
+
+    const cleanUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
 }
