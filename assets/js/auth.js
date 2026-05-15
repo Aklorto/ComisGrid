@@ -7,6 +7,19 @@ const showLogin = document.getElementById('showLogin');
 const showForgot = document.getElementById('showForgot');
 const backToLogin = document.getElementById('backToLogin');
 
+// Client-side register validation: confirm password
+if (registerForm) {
+    registerForm.addEventListener('submit', function (e) {
+        const pwd = document.getElementById('registerPassword');
+        const confirm = document.getElementById('registerConfirmPassword');
+        if (pwd && confirm && pwd.value !== confirm.value) {
+            e.preventDefault();
+            alert('Passwords do not match.');
+            confirm.focus();
+        }
+    });
+}
+
 function setActiveForm(targetForm) {
     const forms = [loginForm, registerForm, forgotForm];
 

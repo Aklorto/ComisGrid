@@ -1,134 +1,185 @@
-<?php
-// ComisGrid landing page: login, register, and forgot password UI only.
-// Connect this later to your PHP/MySQL backend.
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ComisGrid | Login</title>
 
-    <!-- Bootstrap Icons only, for clean input icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <main class="auth-page">
-        <section class="auth-card">
-            <div class="image-panel">
-                <div class="brand-box">
-                    <div class="logo-mark">CG</div>
-                    <div>
-                        <h1>ComisGrid</h1>
-                        <p>Discover artists. Commission ideas. Create together.</p>
-                    </div>
+
+<div class="main-wrapper">
+
+    <!-- LEFT IMAGE CAROUSEL -->
+    <div class="left-panel">
+        <div id="heroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel">
+
+            <div class="carousel-inner h-100">
+
+                <div class="carousel-item active h-100">
+                    <img src="assets/images/fifthslide.png" class="carousel-img" alt="ComisGrid Slide 1">
                 </div>
 
-                <div class="image-placeholder">
-                    <i class="bi bi-image"></i>
-                    <p>Place your artwork / artist image here later</p>
+                <div class="carousel-item h-100">
+                    <img src="assets/images/fourthslide.png" class="carousel-img" alt="ComisGrid Slide 2">
                 </div>
+
+                <div class="carousel-item h-100">
+                    <img src="assets/images/thirdslide.png" class="carousel-img" alt="ComisGrid Slide 3">
+                </div>
+
+                <div class="carousel-item h-100">
+                    <img src="assets/images/sixthslide.png" class="carousel-img" alt="ComisGrid Slide 3">
+                </div>
+
             </div>
 
-            <div class="form-panel">
-                <div class="form-wrapper" id="formWrapper">
-                    <!-- LOGIN FORM -->
-                    <form class="form-box login-form active" id="loginForm" action="backend/login.php" method="POST">
-                        <span class="mini-label">Welcome back</span>
-                        <h2>Login to ComisGrid</h2>
-                        <p class="subtitle">Continue buying, selling, and chatting with artists.</p>
 
-                        <label>Email</label>
-                        <div class="input-group">
-                            <i class="bi bi-envelope"></i>
-                            <input type="email" name="email" placeholder="Enter your email" required>
-                        </div>
 
-                        <label>Password</label>
-                        <div class="input-group">
-                            <i class="bi bi-lock"></i>
-                            <input type="password" name="password" placeholder="Enter your password" required>
-                        </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
 
-                        <div class="form-row">
-                            <label class="remember">
-                                <input type="checkbox" name="remember">
-                                Remember me
-                            </label>
-                            <button type="button" class="link-btn" id="showForgot">Forgot password?</button>
-                        </div>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
 
-                        <button type="submit" class="primary-btn">Login</button>
+        </div>
+    </div>
 
-                        <p class="switch-text">
-                            No account yet?
-                            <button type="button" class="link-btn strong" id="showRegister">Create account</button>
-                        </p>
-                    </form>
+    <!-- RIGHT AUTH PANEL -->
+    <div class="right-panel">
 
-                    <!-- REGISTER FORM -->
-                    <form class="form-box register-form" id="registerForm" action="backend/register.php" method="POST">
-                        <span class="mini-label">Join the grid</span>
-                        <h2>Create Account</h2>
-                        <p class="subtitle">One account lets you buy, sell, post, and message.</p>
+        <div class="auth-box">
 
-                        <label>Full Name</label>
-                        <div class="input-group">
-                            <i class="bi bi-person"></i>
-                            <input type="text" name="full_name" placeholder="Enter your full name" required>
-                        </div>
+            <div class="brand-mini">
+                <img src="assets/images/comisgridlogo1.png" class="logo-img" alt="ComisGrid Logo">
 
-                        <label>Email</label>
-                        <div class="input-group">
-                            <i class="bi bi-envelope"></i>
-                            <input type="email" name="email" placeholder="Enter your email" required>
-                        </div>
-
-                        <label>Password</label>
-                        <div class="input-group">
-                            <i class="bi bi-lock"></i>
-                            <input type="password" name="password" placeholder="Create a password" required>
-                        </div>
-
-                        <label>Confirm Password</label>
-                        <div class="input-group">
-                            <i class="bi bi-shield-lock"></i>
-                            <input type="password" name="confirm_password" placeholder="Confirm your password" required>
-                        </div>
-
-                        <button type="submit" class="primary-btn">Register</button>
-
-                        <p class="switch-text">
-                            Already have an account?
-                            <button type="button" class="link-btn strong" id="showLogin">Login</button>
-                        </p>
-                    </form>
-
-                    <!-- FORGOT PASSWORD FORM -->
-                    <form class="form-box forgot-form" id="forgotForm" action="backend/forgot_password.php" method="POST">
-                        <span class="mini-label">Account recovery</span>
-                        <h2>Forgot Password</h2>
-                        <p class="subtitle">Enter your email. For simulation, this can show a reset confirmation later.</p>
-
-                        <label>Email</label>
-                        <div class="input-group">
-                            <i class="bi bi-envelope-exclamation"></i>
-                            <input type="email" name="email" placeholder="Enter your registered email" required>
-                        </div>
-
-                        <button type="submit" class="primary-btn">Send Reset Link</button>
-
-                        <p class="switch-text">
-                            Remembered your password?
-                            <button type="button" class="link-btn strong" id="backToLogin">Back to login</button>
-                        </p>
-                    </form>
-                </div>
             </div>
-        </section>
-    </main>
 
-    <script src="assets/js/auth.js"></script>
+            <!-- SLIDING FORMS CONTAINER -->
+            <div class="form-slider" id="formSlider">
+
+                <!-- LOGIN FORM -->
+                <div class="form-page">
+                    <h1>Welcome Back!</h1>
+                    <p class="subtitle">Login to explore artworks, commissions, and chats.</p>
+
+                    <form id="loginForm" action="#" method="POST">
+                        <div class="mb-3">
+                            <label>Email or Username</label>
+                            <input type="text" class="form-control" placeholder="Enter your email or username">
+                        </div>
+
+                        <div class="mb-2">
+                            <label>Password</label>
+                            <div class="password-box">
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password">
+                                <button type="button" onclick="togglePassword('loginPassword')">Show</button>
+                            </div>
+                        </div>
+
+                        <div class="forgot-link">
+                            <button type="button" onclick="showForgot()">Forgot password?</button>
+                        </div>
+
+                       <a href="backend/dashboard.php" class="main-btn text-decoration-none d-flex align-items-center justify-content-center">LOGIN</a>
+                    </form>
+
+                    <p class="switch-text">
+                        Don't have an account?
+                        <button onclick="showRegister()">Register here</button>
+                    </p>
+                </div>
+
+                <!-- REGISTER FORM -->
+                <div class="form-page">
+                    <h1>Create Account</h1>
+                    <p class="subtitle">Join ComisGrid and start buying or selling art.</p>
+
+                    <form id="registerForm" action="backend/register.php" method="POST">
+                        <div class="mb-3">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter your full name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Contact Number</label>
+                            <input type="tel" class="form-control" id="contact" name="contact" placeholder="e.g. +1 555-555-5555">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Password</label>
+                            <div class="password-box">
+                                <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Create password">
+                                <button type="button" onclick="togglePassword('registerPassword')">Show</button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Confirm Password</label>
+                            <div class="password-box">
+                                <input type="password" class="form-control" id="registerConfirmPassword" name="confirm_password" placeholder="Confirm password">
+                                <button type="button" onclick="togglePassword('registerConfirmPassword')">Show</button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="main-btn">REGISTER</button>
+                    </form>
+
+                    <p class="switch-text">
+                        Already have an account?
+                        <button onclick="showLogin()">Login here</button>
+                    </p>
+                </div>
+
+                <!-- FORGOT PASSWORD FORM -->
+                <div class="form-page">
+                    <h1>Forgot Password</h1>
+                    <p class="subtitle">Enter your email and we’ll simulate sending a reset link.</p>
+
+                        <form id="forgotForm" action="#" method="POST">
+                        <div class="mb-3">
+                            <label>Email Address</label>
+                            <input type="email" class="form-control" placeholder="Enter your registered email">
+                        </div>
+
+                        <button type="submit" class="main-btn">SEND RESET LINK</button>
+                    </form>
+
+                    <p class="switch-text">
+                        Remembered your password?
+                        <button onclick="showLogin()">Back to login</button>
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS -->
+<script src="assets/js/script.js"></script>
 </body>
 </html>
