@@ -3,7 +3,7 @@ $contributors = [
     [
         'name' => 'Zyril Zaldua',
         'role' => 'Frontend Developer',
-        'image' => 'assets/images/zyril.jpeg',
+        'image' => '../assets/images/zyril.jpeg',
         'phone' => '0917-824-5312',
         'email' => 'zyril.zaldua@ctu.edu.ph',
         'facebook' => 'https://www.facebook.com/zyril.zaldua.3',
@@ -11,7 +11,7 @@ $contributors = [
     [
         'name' => 'Joseph Torrefalma',
         'role' => 'Backend Developer',
-        'image' => 'assets/images/jtorz.jpeg',
+        'image' => '../assets/images/jtorz.jpeg',
         'phone' => '0918-442-7681',
         'email' => 'joseph.torrefalma@ctu.edu.ph',
         'facebook' => 'https://www.facebook.com/jtorz.summit99',
@@ -19,7 +19,7 @@ $contributors = [
     [
         'name' => 'Ralph Navidad',
         'role' => 'Frontend Developer',
-        'image' => 'assets/images/ralph.jpeg',
+        'image' => '../assets/images/ralph.jpeg',
         'phone' => '0919-556-1437',
         'email' => 'ralphjhualanz.navidad@ctu.edu.ph',
         'facebook' => 'https://www.facebook.com/rnavidad16',
@@ -27,7 +27,7 @@ $contributors = [
     [
         'name' => 'Marvin Bonghanoy',
         'role' => 'Frontend Developer',
-        'image' => 'assets/images/marvin.jpeg',
+        'image' => '../assets/images/marvin.jpeg',
         'phone' => '0920-771-8524',
         'email' => 'marvin.bonghanoy@ctu.edu.ph',
         'facebook' => 'https://www.facebook.com/ipabs555',
@@ -35,7 +35,7 @@ $contributors = [
     [
         'name' => 'Hezekiah Paloma',
         'role' => 'Frontend Developer',
-        'image' => 'assets/images/kia.jpeg',
+        'image' => '../assets/images/kia.jpeg',
         'phone' => '0916-238-4425',
         'email' => 'hezekiah.paloma@ctu.edu.ph',
         'facebook' => 'https://www.facebook.com/profile.php?id=61561287823025',
@@ -43,7 +43,7 @@ $contributors = [
     [
         'name' => 'Jamaica Tura',
         'role' => 'Frontend Developer',
-        'image' => 'assets/images/jamaica.jpeg',
+        'image' => '../assets/images/jamaica.jpeg',
         'phone' => '0921-632-1197',
         'email' => 'jamaica.tura@ctu.edu.ph',
         'facebook' => 'https://www.facebook.com/shamshaaam6',
@@ -147,11 +147,9 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
         <div class="logo-text">CommisGrid</div>
     </div>
     <nav class="nav-menu">
-        <a href="index.php" class="nav-item"><i class="bi bi-compass-fill"></i>Explore</a>
+     
         <a href="about_us.php" class="nav-item active"><i class="bi bi-info-circle-fill"></i>About Us</a>
-        <a href="backend/profile.php" class="nav-item"><i class="bi bi-person-circle"></i>My Profile</a>
-        <a href="backend/wallet.php" class="nav-item"><i class="bi bi-wallet2"></i>Wallet</a>
-        <a href="backend/messages.php" class="nav-item"><i class="bi bi-chat-dots-fill"></i>Messages</a>
+        
         <a href="backend/logout.php" class="nav-item"><i class="bi bi-box-arrow-right"></i>Logout</a>
     </nav>
     <div class="sidebar-footer">© 2025 CommisGrid <br>Creative Marketplace Platform</div>
